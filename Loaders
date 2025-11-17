@@ -5,11 +5,10 @@ local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer
 local correctKey = "Winter"
 
--- Add all allowed game PlaceIds here
+-- Allowed PlaceIds with corresponding scripts
 local allowedGames = {
-    [8255217834] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets",
-    -- Add more PlaceIds as needed
-    -- [1234567890] = "https://example.com/script.lua",
+    [102500767640476] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets",
+    -- add more PlaceIds/scripts here if needed
 }
 
 -- GUI setup
