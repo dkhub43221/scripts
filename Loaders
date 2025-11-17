@@ -5,10 +5,12 @@ local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer
 local correctKey = "Winter"
 
--- Allowed PlaceIds with corresponding scripts
-local allowedGames = {
-    [102500767640476] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets",
-    -- add more PlaceIds/scripts here if needed
+-- Allowed GameId
+local allowedGameId = "102500767640476"
+
+-- Script URLs mapped by GameId
+local gameScripts = {
+    ["102500767640476"] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets"
 }
 
 -- GUI setup
@@ -83,7 +85,7 @@ close.MouseButton1Click:Connect(function()
     blur:Destroy()
 end)
 
--- Premium label
+-- Premium line
 local prem = Instance.new("TextLabel")
 prem.Size = UDim2.new(1, -20, 0, 20)
 prem.Position = UDim2.new(0, 10, 0, 45)
@@ -111,7 +113,7 @@ local boxCorner = Instance.new("UICorner")
 boxCorner.CornerRadius = UDim.new(0, 6)
 boxCorner.Parent = box
 
--- Buttons holder
+-- Buttons container
 local buttonHolder = Instance.new("Frame")
 buttonHolder.Size = UDim2.new(1, -40, 0, 35)
 buttonHolder.Position = UDim2.new(0, 20, 0, 115)
@@ -151,13 +153,13 @@ getkey.MouseButton1Click:Connect(function()
         setclipboard(keyLink)
         StarterGui:SetCore("SendNotification", {
             Title = "Discord Link Copied!",
-            Text = "Head over to the #get-scripts channel",
+            Text = "Head over to #get-scripts",
             Duration = 4
         })
     end
 end)
 
--- Remember key toggle
+-- Remember Key toggle
 local rememberFrame = Instance.new("Frame")
 rememberFrame.Size = UDim2.new(1, -40, 0, 25)
 rememberFrame.Position = UDim2.new(0, 20, 0, 155)
@@ -225,23 +227,26 @@ check.MouseButton1Click:Connect(function()
             player:SetAttribute("SavedKey", nil)
         end
 
-        local url = allowedGames[game.PlaceId]
-        if url then
+        if tostring(game.GameId) == allowedGameId then
             StarterGui:SetCore("SendNotification", {
                 Title = "Key Accepted",
-                Text = "Loading script for this game...",
+                Text = "Loading script...",
                 Duration = 3
             })
             gui:Destroy()
             blur:Destroy()
-            loadstring(game:HttpGet(url, true))()
+
+            local url = gameScripts[allowedGameId]
+            loadstring(game:HttpGet(url))()
+
         else
             StarterGui:SetCore("SendNotification", {
                 Title = "Wrong Game",
-                Text = "This script cannot run in this game.",
+                Text = "This script cannot run here.",
                 Duration = 4
             })
         end
+
     else
         StarterGui:SetCore("SendNotification", {
             Title = "Invalid Key",
