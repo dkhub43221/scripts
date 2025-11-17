@@ -34,26 +34,21 @@ frame.BorderSizePixel = 0
 frame.Visible = false
 frame.Parent = screenGui
 
--- Frame corner
-local frameCorner = Instance.new("UICorner")
+local frameCorner = Instance.new("UICorner", frame)
 frameCorner.CornerRadius = UDim.new(0.05, 0)
-frameCorner.Parent = frame
 
 -- Glow stroke
-local glowStroke = Instance.new("UIStroke")
+local glowStroke = Instance.new("UIStroke", frame)
 glowStroke.Thickness = 3
 glowStroke.Transparency = 0.8
 glowStroke.Color = Color3.fromRGB(0, 128, 0)
-glowStroke.Parent = frame
 
--- Gradient on stroke
-local gradient = Instance.new("UIGradient")
+local gradient = Instance.new("UIGradient", glowStroke)
 gradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 255)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
 }
 gradient.Rotation = 45
-gradient.Parent = glowStroke
 
 -- Tween show frame
 local tweenShowFrame = TweenService:Create(frame, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, 0, 0.3, 0)})
@@ -66,7 +61,7 @@ local function createGlowEffect(stroke)
 end
 createGlowEffect(glowStroke)
 
--- Title
+-- Title label with shadow
 local function createTextLabel(parent, text, size, pos, font, textSize)
     local label = Instance.new("TextLabel")
     label.Size = size
@@ -81,9 +76,6 @@ local function createTextLabel(parent, text, size, pos, font, textSize)
     return label
 end
 
-local titleLabel = createTextLabel(frame, "DK's Hub", UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0, 0), Enum.Font.GothamBold, 30)
-
--- Text shadow
 local function createTextShadow(label)
     local shadowOffset = 2
     local shadowLabel = Instance.new("TextLabel")
@@ -98,26 +90,26 @@ local function createTextShadow(label)
     shadowLabel.TextTransparency = 0.5
     shadowLabel.Parent = label.Parent
 end
+
+local titleLabel = createTextLabel(frame, "DK's Hub", UDim2.new(1,0,0.2,0), UDim2.new(0,0,0,0), Enum.Font.GothamBold, 30)
 createTextShadow(titleLabel)
 
--- Credits
-local creditsLabel = createTextLabel(frame, "by They_fwdk", UDim2.new(1, 0, 0.075, 0), UDim2.new(0, 0, 0.2, 0), Enum.Font.Gotham, 10)
+local creditsLabel = createTextLabel(frame, "by They_fwdk", UDim2.new(1,0,0.075,0), UDim2.new(0,0,0.2,0), Enum.Font.Gotham, 10)
 createTextShadow(creditsLabel)
 
 -- Key input
 local keyInput = Instance.new("TextBox")
-keyInput.Size = UDim2.new(0.8, 0, 0.2, 0)
-keyInput.Position = UDim2.new(0.1, 0, 0.3, 0)
+keyInput.Size = UDim2.new(0.8,0,0.2,0)
+keyInput.Position = UDim2.new(0.1,0,0.3,0)
 keyInput.PlaceholderText = "Enter your key here..."
-keyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-keyInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+keyInput.TextColor3 = Color3.fromRGB(255,255,255)
+keyInput.BackgroundColor3 = Color3.fromRGB(40,40,40)
 keyInput.Font = Enum.Font.Gotham
 keyInput.TextSize = 24
 keyInput.Parent = frame
 
-local keyInputCorner = Instance.new("UICorner")
-keyInputCorner.CornerRadius = UDim.new(0.05, 0)
-keyInputCorner.Parent = keyInput
+local keyInputCorner = Instance.new("UICorner", keyInput)
+keyInputCorner.CornerRadius = UDim.new(0.05,0)
 
 -- Buttons
 local function createButton(parent, text, size, pos, color)
@@ -125,7 +117,7 @@ local function createButton(parent, text, size, pos, color)
     btn.Size = size
     btn.Position = pos
     btn.Text = text
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
     btn.BackgroundColor3 = color
     btn.Font = Enum.Font.Gotham
     btn.TextSize = 24
@@ -144,24 +136,25 @@ tweenShowFrame:Play()
 -- Notification system
 local validKey = "Winter"
 local currentNotification = nil
-local function createNotification(title, message, duration, color)
+
+local function createNotification(title,message,duration,color)
     if currentNotification then currentNotification:Destroy() end
     local notification = Instance.new("Frame")
-    notification.Size = UDim2.new(0, 250, 0, 80)
-    notification.Position = UDim2.new(1, -270, 1, -100)
-    notification.BackgroundColor3 = color or Color3.fromRGB(20, 20, 20)
+    notification.Size = UDim2.new(0,250,0,80)
+    notification.Position = UDim2.new(1,-270,1,-100)
+    notification.BackgroundColor3 = color or Color3.fromRGB(20,20,20)
     notification.BorderSizePixel = 0
     notification.ZIndex = 2147483647
     notification.Parent = screenGui
 
-    local UICorner = Instance.new("UICorner", notification)
-    UICorner.CornerRadius = UDim.new(0, 12)
+    local UICorner = Instance.new("UICorner",notification)
+    UICorner.CornerRadius = UDim.new(0,12)
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, 0, 0, 25)
-    titleLabel.Position = UDim2.new(0, 10, 0, 5)
+    titleLabel.Size = UDim2.new(1,0,0,25)
+    titleLabel.Position = UDim2.new(0,10,0,5)
     titleLabel.Text = title
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
     titleLabel.TextSize = 18
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.BackgroundTransparency = 1
@@ -170,8 +163,8 @@ local function createNotification(title, message, duration, color)
     titleLabel.Parent = notification
 
     local messageLabel = Instance.new("TextLabel")
-    messageLabel.Size = UDim2.new(1, 0, 0, 30)
-    messageLabel.Position = UDim2.new(0, 10, 0, 30)
+    messageLabel.Size = UDim2.new(1,0,0,30)
+    messageLabel.Position = UDim2.new(0,10,0,30)
     messageLabel.Text = message
     messageLabel.TextColor3 = Color3.fromRGB(200,200,200)
     messageLabel.TextSize = 14
@@ -182,27 +175,25 @@ local function createNotification(title, message, duration, color)
     messageLabel.TextWrapped = true
     messageLabel.Parent = notification
 
-    local barBackground = Instance.new("Frame")
-    barBackground.Size = UDim2.new(1, -20, 0, 5)
-    barBackground.Position = UDim2.new(0, 10, 1, -15)
-    barBackground.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    local barBackground = Instance.new("Frame",notification)
+    barBackground.Size = UDim2.new(1,-20,0,5)
+    barBackground.Position = UDim2.new(0,10,1,-15)
+    barBackground.BackgroundColor3 = Color3.fromRGB(60,60,60)
     barBackground.BorderSizePixel = 0
-    barBackground.Parent = notification
 
-    local progressBar = Instance.new("Frame")
+    local progressBar = Instance.new("Frame",barBackground)
     progressBar.Size = UDim2.new(0,0,1,0)
     progressBar.BackgroundColor3 = Color3.fromRGB(0,0,139)
     progressBar.BorderSizePixel = 0
-    progressBar.Parent = barBackground
 
     currentNotification = notification
 
     spawn(function()
         local elapsedTime = 0
         while elapsedTime < duration do
-            wait(0.1)
+            task.wait(0.1)
             elapsedTime += 0.1
-            progressBar.Size = UDim2.new(elapsedTime / duration, 0, 1, 0)
+            progressBar.Size = UDim2.new(elapsedTime/duration,0,1,0)
         end
         notification:Destroy()
         currentNotification = nil
@@ -212,33 +203,34 @@ end
 -- Button connections
 checkKeyButton.MouseButton1Click:Connect(function()
     if keyInput.Text == validKey then
-        createNotification("Key Verification", "Authorized! Executing script...", 5, Color3.fromRGB(30,30,30))
-        screenGui:Destroy()
-        blurEffect:Destroy()
+        -- Destroy GUI and blur before running script
+        if screenGui then screenGui:Destroy() end
+        if blurEffect then blurEffect:Destroy() end
+        task.wait(0.1)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/Loaders",true))()
     else
-        createNotification("Key Verification", "Unauthorized! Try again.", 5, Color3.fromRGB(30,30,30))
+        createNotification("Key Verification","Unauthorized! Try again.",5,Color3.fromRGB(30,30,30))
     end
 end)
 
 discordButton.MouseButton1Click:Connect(function()
     local discordLink = "https://discord.gg/YtHcNzNM"
-    createNotification("Discord Invite Copied!", "Join the Discord and navigate to the #key channel to get the key!", 4, Color3.fromRGB(30,30,30))
     setclipboard(discordLink)
+    createNotification("Discord Invite Copied!","Join the Discord and navigate to the #key channel to get the key!",4,Color3.fromRGB(30,30,30))
 end)
 
 closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-    blurEffect:Destroy()
+    if screenGui then screenGui:Destroy() end
+    if blurEffect then blurEffect:Destroy() end
 end)
 
 -- Cleanup blur on respawn
 player.CharacterAdded:Connect(function()
-    blurEffect.Size = 0
+    if blurEffect then blurEffect.Size = 0 end
 end)
 player.CharacterRemoving:Connect(function()
-    blurEffect.Size = 0
+    if blurEffect then blurEffect.Size = 0 end
 end)
 Players.PlayerAdded:Connect(function()
-    blurEffect.Size = 0
+    if blurEffect then blurEffect.Size = 0 end
 end)
