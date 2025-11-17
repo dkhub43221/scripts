@@ -1,3 +1,6 @@
+-- Prevent the key GUI from reopening if already verified
+if _G.DK_HubKeyVerified then return end
+
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
@@ -203,9 +206,13 @@ end
 -- Button connections
 checkKeyButton.MouseButton1Click:Connect(function()
     if keyInput.Text == validKey then
-        -- Destroy GUI and blur before running script
+        -- Set global flag to prevent reopening
+        _G.DK_HubKeyVerified = true
+
+        -- Destroy GUI and blur
         if screenGui then screenGui:Destroy() end
         if blurEffect then blurEffect:Destroy() end
+
         task.wait(0.1)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/Loaders",true))()
     else
