@@ -2,20 +2,18 @@ local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.DisplayOrder = 10 
 
--- Sound
 local sound = Instance.new("Sound", screenGui)
 sound.SoundId = "rbxassetid://6979299092"
 sound.Volume = 1
 sound:Play()
+
 sound.Ended:Connect(function()
     sound:Destroy()
 end)
 
--- Blur Effect
 local blurEffect = Instance.new("BlurEffect", game.Lighting)
 blurEffect.Size = 100
 
--- Main Frame
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.32, 0, 0.32, 0)
 frame.Position = UDim2.new(0.5, 0, 0, 0)
@@ -39,12 +37,10 @@ gradient.Color = ColorSequence.new{
 }
 gradient.Rotation = 45
 
--- Tween for frame
 local TweenService = game:GetService("TweenService")
 local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 local tweenShowFrame = TweenService:Create(frame, tweenInfo, {Position = UDim2.new(0.5, 0, 0.3, 0)})
 
--- Glow Effect Tween
 local function createGlowEffect(stroke)
     local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true)
     local tween = TweenService:Create(stroke, tweenInfo, {Transparency = 0.1, Thickness = 5})
@@ -52,7 +48,6 @@ local function createGlowEffect(stroke)
 end
 createGlowEffect(glowStroke)
 
--- Title Label
 local titleLabel = Instance.new("TextLabel", frame)
 titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -61,6 +56,7 @@ titleLabel.TextScaled = true
 titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.BackgroundTransparency = 1
+titleLabel.TextSize = 30
 
 local function createTextShadow(label)
     local shadowOffset = 2
@@ -72,11 +68,12 @@ local function createTextShadow(label)
     shadowLabel.Font = label.Font
     shadowLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
     shadowLabel.BackgroundTransparency = 1
+    shadowLabel.TextSize = label.TextSize
+    shadowLabel.TextTransparency = 0.5
 end
 
 createTextShadow(titleLabel)
 
--- Credits Label
 local creditsLabel = Instance.new("TextLabel", frame)
 creditsLabel.Size = UDim2.new(1, 0, 0.075, 0)
 creditsLabel.Position = UDim2.new(0, 0, 0.2, 0)
@@ -85,21 +82,23 @@ creditsLabel.TextScaled = true
 creditsLabel.Font = Enum.Font.Gotham
 creditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 creditsLabel.BackgroundTransparency = 1
+creditsLabel.TextSize = 10
+
 createTextShadow(creditsLabel)
 
--- Key Input
 local keyInput = Instance.new("TextBox", frame)
 keyInput.Size = UDim2.new(0.8, 0, 0.2, 0)
 keyInput.Position = UDim2.new(0.1, 0, 0.3, 0)
 keyInput.PlaceholderText = "Enter your key here..."
 keyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
 keyInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+keyInput.Text = ""
 keyInput.Font = Enum.Font.Gotham
 keyInput.TextSize = 24
+
 local keyInputCorner = Instance.new("UICorner", keyInput)
 keyInputCorner.CornerRadius = UDim.new(0.05, 0)
 
--- Buttons
 local checkKeyButton = Instance.new("TextButton", frame)
 checkKeyButton.Size = UDim2.new(0.6, 0, 0.2, 0)
 checkKeyButton.Position = UDim2.new(0.2, 0, 0.55, 0)
@@ -128,19 +127,23 @@ closeButton.BorderSizePixel = 0
 closeButton.Font = Enum.Font.GothamBold
 closeButton.TextSize = 24
 
--- Show frame
 frame.Visible = true
 tweenShowFrame:Play()
 
--- Key verification and game loader
-local validKey = "Summer"
-local allowedGameId = "8255217834"
+local validKey = "Winter"
+local notificationPositionY = -100
+local currentNotification = nil
 
 local function createNotification(title, message, duration, color)
+    if currentNotification then
+        currentNotification:Destroy()
+    end
+
     local notification = Instance.new("Frame")
     notification.Size = UDim2.new(0, 250, 0, 80)
-    notification.Position = UDim2.new(1, -270, 1, -100)
+    notification.Position = UDim2.new(1, -270, 1, notificationPositionY)
     notification.BackgroundColor3 = color or Color3.fromRGB(20, 20, 20)
+    notification.BackgroundTransparency = 0
     notification.BorderSizePixel = 0
     notification.ZIndex = 2147483647
     notification.Parent = screenGui
@@ -156,7 +159,10 @@ local function createNotification(title, message, duration, color)
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     titleLabel.TextSize = 18
     titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.TextYAlignment = Enum.TextYAlignment.Center
     titleLabel.BackgroundTransparency = 1
+    titleLabel.ZIndex = 2147483647
     titleLabel.Parent = notification
 
     local messageLabel = Instance.new("TextLabel")
@@ -166,8 +172,11 @@ local function createNotification(title, message, duration, color)
     messageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     messageLabel.TextSize = 14
     messageLabel.Font = Enum.Font.Gotham
+    messageLabel.TextXAlignment = Enum.TextXAlignment.Left
+    messageLabel.TextYAlignment = Enum.TextYAlignment.Center
     messageLabel.BackgroundTransparency = 1
     messageLabel.TextWrapped = true
+    messageLabel.ZIndex = 2147483647
     messageLabel.Parent = notification
 
     local barBackground = Instance.new("Frame")
@@ -175,45 +184,51 @@ local function createNotification(title, message, duration, color)
     barBackground.Position = UDim2.new(0, 10, 1, -15)
     barBackground.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     barBackground.BorderSizePixel = 0
+    barBackground.ZIndex = 2147483647
     barBackground.Parent = notification
 
     local progressBar = Instance.new("Frame")
     progressBar.Size = UDim2.new(0, 0, 1, 0)
     progressBar.BackgroundColor3 = Color3.fromRGB(0, 0, 139)
     progressBar.BorderSizePixel = 0
+    progressBar.ZIndex = 2147483647
     progressBar.Parent = barBackground
 
-    spawn(function()
-        local elapsedTime = 0
-        while elapsedTime < 5 do
+    currentNotification = notification
+
+    local elapsedTime = 0
+    local function updateBar()
+        while elapsedTime < duration do
             wait(0.1)
             elapsedTime = elapsedTime + 0.1
-            progressBar.Size = UDim2.new(elapsedTime / 5, 0, 1, 0)
+            progressBar.Size = UDim2.new(elapsedTime / duration, 0, 1, 0)
         end
         notification:Destroy()
-    end)
+    end
+
+    spawn(updateBar)
 end
 
 checkKeyButton.MouseButton1Click:Connect(function()
     local keyInputText = keyInput.Text
     if keyInputText == validKey then
-        if tostring(game.GameId) == allowedGameId then
-            createNotification("Key Verification", "Authorized! Executing script...", 5, Color3.fromRGB(30, 30, 30))
-            screenGui:Destroy()
-            blurEffect:Destroy()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/Loaders", true))()
-        else
-            createNotification("Game!", "We do not support this game.", 5, Color3.fromRGB(255, 0, 0))
-        end
+        createNotification("Key Verification", "Authorized! Executing script...", 5, Color3.fromRGB(30, 30, 30))
+        screenGui:Destroy()
+        blurEffect:Destroy()
+
+        
+   
+     loadstring(game:HttpGet("https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/Loaders",true))()
+
     else
-        createNotification("Key Verification", "Unauthorized! Try again.", 5, Color3.fromRGB(255, 0, 0))
+        createNotification("Key Verification", "Unauthorized! Try again.", 5, Color3.fromRGB(30, 30, 30))
     end
 end)
 
 discordButton.MouseButton1Click:Connect(function()
     local discordLink = "https://discord.gg/YtHcNzNM"
-    setclipboard(discordLink)
     createNotification("Discord Invite Copied!", "Join the Discord and navigate to the #key channel to get the key!", 4, Color3.fromRGB(30, 30, 30))
+    setclipboard(discordLink)
 end)
 
 closeButton.MouseButton1Click:Connect(function()
@@ -221,7 +236,6 @@ closeButton.MouseButton1Click:Connect(function()
     blurEffect:Destroy()
 end)
 
--- Remove blur on character change
 player.CharacterAdded:Connect(function()
     blurEffect.Size = 0
 end)
