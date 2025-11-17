@@ -3,17 +3,18 @@ local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
 local StarterGui = game:GetService("StarterGui")
 local player = Players.LocalPlayer
+
 local correctKey = "Winter"
 
 -- Allowed GameId
-local allowedGameId = "102500767640476"
+local allowedGameId = "8255217834"
 
 -- Script URLs mapped by GameId
-local gameScripts = {
-    ["102500767640476"] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets"
+local AllowedGames = {
+    ["8255217834"] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets"
 }
 
--- GUI setup
+-- GUI Setup
 local gui = Instance.new("ScreenGui")
 gui.Name = "DK_HUB_GUI"
 gui.ResetOnSpawn = false
@@ -42,30 +43,29 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 8)
 corner.Parent = frame
 
--- Title with typing effect
+-- Title typing effect
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
-title.Text = ""
 title.TextColor3 = Color3.fromRGB(0, 255, 0)
 title.TextScaled = true
 title.Font = Enum.Font.GothamBold
 title.Parent = frame
 
-local function typeTitle(text)
+local function typeTitle(text, speed)
+    speed = speed or 0.1
     title.Text = ""
     for i = 1, #text do
-        title.Text = string.sub(text, 1, i)
-        task.wait(0.1)
+        title.Text = text:sub(1, i)
+        task.wait(speed)
     end
 end
 
--- Loop typing effect
 task.spawn(function()
     while true do
         typeTitle("DK's HUB")
         task.wait(0.5)
-        typeTitle("")
+        title.Text = ""
         task.wait(0.5)
     end
 end)
@@ -85,25 +85,12 @@ close.MouseButton1Click:Connect(function()
     blur:Destroy()
 end)
 
--- Premium line
-local prem = Instance.new("TextLabel")
-prem.Size = UDim2.new(1, -20, 0, 20)
-prem.Position = UDim2.new(0, 10, 0, 45)
-prem.BackgroundTransparency = 1
-prem.Text = "Don’t want to wait? Purchase Premium!"
-prem.TextColor3 = Color3.fromRGB(255, 255, 255)
-prem.TextSize = 14
-prem.Font = Enum.Font.GothamSemibold
-prem.Parent = frame
-prem.MouseEnter:Connect(function() prem.TextColor3 = Color3.fromRGB(0, 255, 0) end)
-prem.MouseLeave:Connect(function() prem.TextColor3 = Color3.fromRGB(255, 255, 255) end)
-
 -- Key TextBox
 local box = Instance.new("TextBox")
 box.Size = UDim2.new(1, -40, 0, 35)
 box.Position = UDim2.new(0, 20, 0, 70)
 box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-box.PlaceholderText = "Enter your key here..."
+box.PlaceholderText = "Enter your key..."
 box.TextColor3 = Color3.fromRGB(255, 255, 255)
 box.PlaceholderColor3 = Color3.fromRGB(160, 160, 160)
 box.Font = Enum.Font.Gotham
@@ -120,46 +107,37 @@ buttonHolder.Position = UDim2.new(0, 20, 0, 115)
 buttonHolder.BackgroundTransparency = 1
 buttonHolder.Parent = frame
 
--- Check key button
-local check = Instance.new("TextButton")
-check.Size = UDim2.new(0.48, 0, 1, 0)
-check.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-check.TextColor3 = Color3.fromRGB(255, 255, 255)
-check.Font = Enum.Font.GothamBold
-check.Text = "Check Key"
-check.TextSize = 14
-check.Parent = buttonHolder
-local checkCorner = Instance.new("UICorner")
-checkCorner.CornerRadius = UDim.new(0, 6)
-checkCorner.Parent = check
+local function createButton(text, positionX)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.48, 0, 1, 0)
+    btn.Position = UDim2.new(positionX, 0, 0, 0)
+    btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = text
+    btn.TextSize = 14
+    btn.Parent = buttonHolder
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = btn
+    return btn
+end
 
--- Get key button
-local getkey = Instance.new("TextButton")
-getkey.Size = UDim2.new(0.48, 0, 1, 0)
-getkey.Position = UDim2.new(0.52, 0, 0, 0)
-getkey.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-getkey.TextColor3 = Color3.fromRGB(255, 255, 255)
-getkey.Font = Enum.Font.GothamBold
-getkey.Text = "Get Key!"
-getkey.TextSize = 14
-getkey.Parent = buttonHolder
-local getCorner = Instance.new("UICorner")
-getCorner.CornerRadius = UDim.new(0, 6)
-getCorner.Parent = getkey
+local checkBtn = createButton("Check Key", 0)
+local getKeyBtn = createButton("Get Key!", 0.52)
 
-getkey.MouseButton1Click:Connect(function()
-    local keyLink = "https://discord.gg/vfSYaEX5"
+getKeyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
-        setclipboard(keyLink)
+        setclipboard("https://discord.gg/vfSYaEX5")
         StarterGui:SetCore("SendNotification", {
-            Title = "Discord Link Copied!",
-            Text = "Head over to #get-scripts",
+            Title = "Discord Link Copied",
+            Text = "Go to #get-scripts",
             Duration = 4
         })
     end
 end)
 
--- Remember Key toggle
+-- Remember key toggle
 local rememberFrame = Instance.new("Frame")
 rememberFrame.Size = UDim2.new(1, -40, 0, 25)
 rememberFrame.Position = UDim2.new(0, 20, 0, 155)
@@ -202,7 +180,6 @@ checkboxBtn.Parent = checkbox
 
 local rememberState = false
 local savedKey = player:GetAttribute("SavedKey")
-
 if savedKey then
     box.Text = savedKey
     rememberState = true
@@ -218,40 +195,40 @@ checkboxBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Key check logic
-check.MouseButton1Click:Connect(function()
-    if box.Text == correctKey then
-        if rememberState then
-            player:SetAttribute("SavedKey", box.Text)
-        else
-            player:SetAttribute("SavedKey", nil)
-        end
-
-        if tostring(game.GameId) == allowedGameId then
-            StarterGui:SetCore("SendNotification", {
-                Title = "Key Accepted",
-                Text = "Loading script...",
-                Duration = 3
-            })
-            gui:Destroy()
-            blur:Destroy()
-
-            local url = gameScripts[allowedGameId]
-            loadstring(game:HttpGet(url))()
-
-        else
-            StarterGui:SetCore("SendNotification", {
-                Title = "Wrong Game",
-                Text = "This script cannot run here.",
-                Duration = 4
-            })
-        end
-
-    else
+-- Key checking function
+local function checkKey()
+    if box.Text ~= correctKey then
         StarterGui:SetCore("SendNotification", {
             Title = "Invalid Key",
             Text = "Please enter the correct key.",
             Duration = 3
         })
+        return
     end
-end)
+
+    if rememberState then
+        player:SetAttribute("SavedKey", box.Text)
+    else
+        player:SetAttribute("SavedKey", nil)
+    end
+
+    local scriptUrl = AllowedGames[tostring(game.GameId)]
+    if scriptUrl then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Key Accepted",
+            Text = "Loading script...",
+            Duration = 3
+        })
+        gui:Destroy()
+        blur:Destroy()
+        loadstring(game:HttpGet(scriptUrl))()
+    else
+        StarterGui:SetCore("SendNotification", {
+            Title = "Wrong Game",
+            Text = "This script cannot run here.",
+            Duration = 4
+        })
+    end
+end
+
+checkBtn.MouseButton1Click:Connect(checkKey)
