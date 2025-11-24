@@ -1,266 +1,233 @@
-
-local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui", player.PlayerGui)
-screenGui.DisplayOrder = 10 
-
-local sound = Instance.new("Sound", screenGui)
-sound.SoundId = "rbxassetid://6979299092"
-sound.Volume = 1
-sound:Play()
-
-sound.Ended:Connect(function()
-    sound:Destroy()
-end)
-
-local blurEffect = Instance.new("BlurEffect", game.Lighting)
-blurEffect.Size = 100
-
-local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.32, 0, 0.32, 0)
-frame.Position = UDim2.new(0.5, 0, 0, 0)
-frame.AnchorPoint = Vector2.new(0.5, 0)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BorderSizePixel = 0
-frame.Visible = false
-
-local frameCorner = Instance.new("UICorner", frame)
-frameCorner.CornerRadius = UDim.new(0.05, 0)
-
-local glowStroke = Instance.new("UIStroke", frame)
-glowStroke.Thickness = 3
-glowStroke.Transparency = 0.8
-glowStroke.Color = Color3.fromRGB(0, 0, 139)
-
-local gradient = Instance.new("UIGradient", glowStroke)
-gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 139))
-}
-gradient.Rotation = 45
-
+local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
-local tweenShowFrame = TweenService:Create(frame, tweenInfo, {Position = UDim2.new(0.5, 0, 0.3, 0)})
+local Lighting = game:GetService("Lighting")
+local StarterGui = game:GetService("StarterGui")
+local player = Players.LocalPlayer
 
-local function createGlowEffect(stroke)
-    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true)
-    local tween = TweenService:Create(stroke, tweenInfo, {Transparency = 0.1, Thickness = 5})
-    tween:Play()
-end
-createGlowEffect(glowStroke)
+local correctKey = "Winter"
 
-local titleLabel = Instance.new("TextLabel", frame)
-titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.Text = "DK's Hub"
-titleLabel.TextScaled = true
-titleLabel.Font = Enum.Font.GothamBold
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.BackgroundTransparency = 1
-titleLabel.TextSize = 30
-
-local function createTextShadow(label)
-    local shadowOffset = 2
-    local shadowLabel = Instance.new("TextLabel", frame)
-    shadowLabel.Size = label.Size
-    shadowLabel.Position = label.Position + UDim2.new(0, shadowOffset, 0, shadowOffset)
-    shadowLabel.Text = label.Text
-    shadowLabel.TextScaled = label.TextScaled
-    shadowLabel.Font = label.Font
-    shadowLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-    shadowLabel.BackgroundTransparency = 1
-    shadowLabel.TextSize = label.TextSize
-    shadowLabel.TextTransparency = 0.5
-end
-
-createTextShadow(titleLabel)
-
-local creditsLabel = Instance.new("TextLabel", frame)
-creditsLabel.Size = UDim2.new(1, 0, 0.075, 0)
-creditsLabel.Position = UDim2.new(0, 0, 0.2, 0)
-creditsLabel.Text = "by XDk | Read Bio Before @"
-creditsLabel.TextScaled = true
-creditsLabel.Font = Enum.Font.Gotham
-creditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-creditsLabel.BackgroundTransparency = 1
-creditsLabel.TextSize = 10
-
-createTextShadow(creditsLabel)
-
-local keyInput = Instance.new("TextBox", frame)
-keyInput.Size = UDim2.new(0.8, 0, 0.2, 0)
-keyInput.Position = UDim2.new(0.1, 0, 0.3, 0)
-keyInput.PlaceholderText = "Enter your key here..."
-keyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-keyInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-keyInput.Text = ""
-keyInput.Font = Enum.Font.Gotham
-keyInput.TextSize = 24
-
-local keyInputCorner = Instance.new("UICorner", keyInput)
-keyInputCorner.CornerRadius = UDim.new(0.05, 0)
-
-local checkKeyButton = Instance.new("TextButton", frame)
-checkKeyButton.Size = UDim2.new(0.6, 0, 0.2, 0)
-checkKeyButton.Position = UDim2.new(0.2, 0, 0.55, 0)
-checkKeyButton.Text = "Check Key"
-checkKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-checkKeyButton.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
-checkKeyButton.Font = Enum.Font.Gotham
-checkKeyButton.TextSize = 24
-
-local discordButton = Instance.new("TextButton", frame)
-discordButton.Size = UDim2.new(0.3, 0, 0.2, 0)
-discordButton.Position = UDim2.new(0.35, 0, 0.8, 0)
-discordButton.Text = "Get Key!"
-discordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-discordButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-discordButton.Font = Enum.Font.Gotham
-discordButton.TextSize = 24
-
-local closeButton = Instance.new("TextButton", frame)
-closeButton.Size = UDim2.new(0.1, 0, 0.1, 0)
-closeButton.Position = UDim2.new(0.9, 0, 0, 0)
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-closeButton.BorderSizePixel = 0
-closeButton.Font = Enum.Font.GothamBold
-closeButton.TextSize = 24
-
-frame.Visible = true
-tweenShowFrame:Play()
-
-local validKey = "Winter"
-local notificationPositionY = -100
-local currentNotification = nil
-
-local function createNotification(title, message, duration, color)
-    if currentNotification then
-        currentNotification:Destroy()
-    end
-
-    local notification = Instance.new("Frame")
-    notification.Size = UDim2.new(0, 250, 0, 80)
-    notification.Position = UDim2.new(1, -270, 1, notificationPositionY)
-    notification.BackgroundColor3 = color or Color3.fromRGB(20, 20, 20)
-    notification.BackgroundTransparency = 0
-    notification.BorderSizePixel = 0
-    notification.ZIndex = 2147483647  -- Set to maximum ZIndex to ensure it's in front of everything
-    notification.Parent = screenGui
-
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 12)
-    UICorner.Parent = notification
-
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, 0, 0, 25)
-    titleLabel.Position = UDim2.new(0, 10, 0, 5)
-    titleLabel.Text = title
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    titleLabel.TextSize = 18
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    titleLabel.TextYAlignment = Enum.TextYAlignment.Center
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.ZIndex = 2147483647  -- Ensure the title is also in front of everything
-    titleLabel.Parent = notification
-
-    local messageLabel = Instance.new("TextLabel")
-    messageLabel.Size = UDim2.new(1, 0, 0, 30)
-    messageLabel.Position = UDim2.new(0, 10, 0, 30)
-    messageLabel.Text = message
-    messageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-    messageLabel.TextSize = 14
-    messageLabel.Font = Enum.Font.Gotham
-    messageLabel.TextXAlignment = Enum.TextXAlignment.Left
-    messageLabel.TextYAlignment = Enum.TextYAlignment.Center
-    messageLabel.BackgroundTransparency = 1
-    messageLabel.TextWrapped = true
-    messageLabel.ZIndex = 2147483647  -- Ensure the message is also in front
-    messageLabel.Parent = notification
-
-    local barBackground = Instance.new("Frame")
-    barBackground.Size = UDim2.new(1, -20, 0, 5)
-    barBackground.Position = UDim2.new(0, 10, 1, -15)
-    barBackground.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    barBackground.BorderSizePixel = 0
-    barBackground.ZIndex = 2147483647  -- Ensure the progress bar is in front as well
-    barBackground.Parent = notification
-
-    local progressBar = Instance.new("Frame")
-    progressBar.Size = UDim2.new(0, 0, 1, 0)
-    progressBar.BackgroundColor3 = Color3.fromRGB(0, 0, 139)
-    progressBar.BorderSizePixel = 0
-    progressBar.ZIndex = 2147483647  -- Ensure the progress bar is in front
-    progressBar.Parent = barBackground
-
-    currentNotification = notification
-
-    local elapsedTime = 0
-    local function updateBar()
-        while elapsedTime < duration do
-            wait(0.1)
-            elapsedTime = elapsedTime + 0.1
-            progressBar.Size = UDim2.new(elapsedTime / duration, 0, 1, 0)
-        end
-        notification:Destroy()
-    end
-
-    spawn(updateBar)
-end
-
-
-
-
-checkKeyButton.MouseButton1Click:Connect(function()
-    local keyInputText = keyInput.Text
-    if keyInputText == validKey then
-        createNotification("Key Verification", "Authorized! Executing script...", 5, Color3.fromRGB(30, 30, 30))
-        screenGui:Destroy()
-        blurEffect:Destroy()
-
-local placeId = game.PlaceId
-local scripts = {
+local AllowedGames = {
     [102500767640476] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets",
     [18642421777] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/thabronx.lua",
     [16472538603] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/thabronx.lua",
     [11177482306] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/streetzwarz.lua",
 }
 
-pcall(function()
-    loadstring(game:HttpGet(scriptUrl))()
-end)
+local gui = Instance.new("ScreenGui")
+gui.Name = "DK_HUB_GUI"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
 
+local blur = Instance.new("BlurEffect")
+blur.Size = 0
+blur.Parent = Lighting
+TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 360, 0, 180)
+frame.Position = UDim2.new(0.5, -180, 0.5, -90)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderSizePixel = 0
+frame.Parent = gui
 
-if not success then
-    warn("Error executing script: " .. errorMsg)
+local outline = Instance.new("UIStroke")
+outline.Thickness = 3
+outline.Color = Color3.fromRGB(0, 255, 0)
+outline.Parent = frame
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 8)
+corner.Parent = frame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(0, 255, 0)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+title.Parent = frame
+
+local function typeTitle(text, speed)
+    speed = speed or 0.1
+    title.Text = ""
+    for i = 1, #text do
+        title.Text = text:sub(1, i)
+        task.wait(speed)
+    end
 end
 
-        createNotification("Key Verification", "Unauthorized! Try again.", 5, Color3.fromRGB(30, 30, 30))
+task.spawn(function()
+    while true do
+        typeTitle("DK's HUB")
+        task.wait(0.5)
+        title.Text = ""
+        task.wait(0.5)
     end
 end)
 
-discordButton.MouseButton1Click:Connect(function()
-    local discordLink = "https://discord.gg/expresshub"
-    createNotification("Discord Invite Copied!", "Join the Discord and navigate to the #key channel to get the key!", 8, Color3.fromRGB(30, 30, 30))
-    setclipboard(discordLink)
+local close = Instance.new("TextButton")
+close.Size = UDim2.new(0, 30, 0, 30)
+close.Position = UDim2.new(1, -35, 0, 5)
+close.BackgroundTransparency = 1
+close.Text = "X"
+close.TextColor3 = Color3.fromRGB(255, 255, 255)
+close.TextScaled = true
+close.Font = Enum.Font.GothamBold
+close.Parent = frame
+close.MouseButton1Click:Connect(function()
+    gui:Destroy()
+    blur:Destroy()
 end)
 
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-    blurEffect:Destroy()
+local box = Instance.new("TextBox")
+box.Size = UDim2.new(1, -40, 0, 35)
+box.Position = UDim2.new(0, 20, 0, 70)
+box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+box.PlaceholderText = "Enter your key..."
+box.TextColor3 = Color3.fromRGB(255, 255, 255)
+box.PlaceholderColor3 = Color3.fromRGB(160, 160, 160)
+box.Font = Enum.Font.Gotham
+box.TextSize = 14
+box.Parent = frame
+
+local boxCorner = Instance.new("UICorner")
+boxCorner.CornerRadius = UDim.new(0, 6)
+boxCorner.Parent = box
+
+local buttonHolder = Instance.new("Frame")
+buttonHolder.Size = UDim2.new(1, -40, 0, 35)
+buttonHolder.Position = UDim2.new(0, 20, 0, 115)
+buttonHolder.BackgroundTransparency = 1
+buttonHolder.Parent = frame
+
+local function createButton(text, pos)
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.new(0.48, 0, 1, 0)
+    b.Position = UDim2.new(pos, 0, 0, 0)
+    b.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.Font = Enum.Font.GothamBold
+    b.Text = text
+    b.TextSize = 14
+    b.Parent = buttonHolder
+    local c = Instance.new("UICorner")
+    c.CornerRadius = UDim.new(0, 6)
+    c.Parent = b
+    return b
+end
+
+local checkBtn = createButton("Check Key", 0)
+local getKeyBtn = createButton("Get Key!", 0.52)
+
+getKeyBtn.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard("https://discord.gg/RufbzyCN6z")
+        StarterGui:SetCore("SendNotification", {
+            Title = "Discord Link Copied",
+            Text = "Go to #get-scripts",
+            Duration = 4
+        })
+    end
 end)
 
-player.CharacterAdded:Connect(function()
-    blurEffect.Size = 0
+local rememberFrame = Instance.new("Frame")
+rememberFrame.Size = UDim2.new(1, -40, 0, 25)
+rememberFrame.Position = UDim2.new(0, 20, 0, 155)
+rememberFrame.BackgroundTransparency = 1
+rememberFrame.Parent = frame
+
+local rememberLabel = Instance.new("TextLabel")
+rememberLabel.Size = UDim2.new(0.8, 0, 1, 0)
+rememberLabel.BackgroundTransparency = 1
+rememberLabel.Text = "Remember Key"
+rememberLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+rememberLabel.Font = Enum.Font.Gotham
+rememberLabel.TextSize = 14
+rememberLabel.TextXAlignment = Enum.TextXAlignment.Left
+rememberLabel.Parent = rememberFrame
+
+local checkbox = Instance.new("Frame")
+checkbox.Size = UDim2.new(0, 20, 0, 20)
+checkbox.Position = UDim2.new(0.8, 0, 0, 2)
+checkbox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+checkbox.Parent = rememberFrame
+
+local checkboxCorner = Instance.new("UICorner")
+checkboxCorner.CornerRadius = UDim.new(0, 4)
+checkboxCorner.Parent = checkbox
+
+local tick = Instance.new("Frame")
+tick.Size = UDim2.new(0, 0, 0, 0)
+tick.Position = UDim2.new(0, 2, 0, 2)
+tick.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+tick.Parent = checkbox
+
+local tickCorner = Instance.new("UICorner")
+tickCorner.CornerRadius = UDim.new(0, 2)
+tickCorner.Parent = tick
+
+local checkboxBtn = Instance.new("TextButton")
+checkboxBtn.Size = UDim2.new(1, 0, 1, 0)
+checkboxBtn.BackgroundTransparency = 1
+checkboxBtn.Text = ""
+checkboxBtn.Parent = checkbox
+
+local rememberState = false
+local savedKey = player:GetAttribute("SavedKey")
+if savedKey then
+    box.Text = savedKey
+    rememberState = true
+    tick:TweenSize(UDim2.new(1, -4, 1, -4), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+end
+
+checkboxBtn.MouseButton1Click:Connect(function()
+    rememberState = not rememberState
+    if rememberState then
+        tick:TweenSize(UDim2.new(1, -4, 1, -4), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+    else
+        tick:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+    end
 end)
 
-player.CharacterRemoving:Connect(function()
-    blurEffect.Size = 0
-end)
+local function checkKey()
+    if box.Text ~= correctKey then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Invalid Key",
+            Text = "Please enter the correct key.",
+            Duration = 3
+        })
+        return
+    end
 
-game:GetService("Players").PlayerAdded:Connect(function()
-    blurEffect.Size = 0
-end)
+    if rememberState then
+        player:SetAttribute("SavedKey", box.Text)
+    else
+        player:SetAttribute("SavedKey", nil)
+    end
+
+    local scriptUrl = AllowedGames[game.PlaceId]
+
+    if scriptUrl then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Key Accepted",
+            Text = "Loading script...",
+            Duration = 3
+        })
+        gui:Destroy()
+        blur:Destroy()
+        local success, err = pcall(function()
+            loadstring(game:HttpGet(scriptUrl))()
+        end)
+        if not success then
+            warn("Failed to load script: "..tostring(err))
+        end
+    else
+        StarterGui:SetCore("SendNotification", {
+            Title = "Wrong Game",
+            Text = "This script cannot run here.",
+            Duration = 4
+        })
+    end
+end
+
+checkBtn.MouseButton1Click:Connect(checkKey)
