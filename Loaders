@@ -13,16 +13,19 @@ local AllowedGames = {
     [11177482306] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/streetzwarz.lua",
 }
 
+-- GUI Setup
 local gui = Instance.new("ScreenGui")
 gui.Name = "DK_HUB_GUI"
 gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
 
+-- Blur Effect
 local blur = Instance.new("BlurEffect")
 blur.Size = 0
 blur.Parent = Lighting
 TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
+-- Main Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 360, 0, 180)
 frame.Position = UDim2.new(0.5, -180, 0.5, -90)
@@ -39,6 +42,7 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(0, 8)
 corner.Parent = frame
 
+-- Title Animation
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
@@ -47,24 +51,12 @@ title.TextScaled = true
 title.Font = Enum.Font.GothamBold
 title.Parent = frame
 
-local prem = Instance.new("TextLabel")
-prem.Size = UDim2.new(1, -20, 0, 20)
-prem.Position = UDim2.new(0, 10, 0, 45)
-prem.BackgroundTransparency = 1
-prem.Text = "Don’t want to wait? Purchase Premium!"
-prem.TextColor3 = Color3.fromRGB(255, 255, 255)
-prem.TextSize = 14
-prem.Font = Enum.Font.GothamSemibold
-prem.Parent = frame
-prem.MouseEnter:Connect(function() prem.TextColor3 = Color3.fromRGB(0, 255, 0) end)
-prem.MouseLeave:Connect(function() prem.TextColor3 = Color3.fromRGB(255, 255, 255) end)
-
-local function typeTitle(t, s)
-    s = s or 0.1
+local function typeTitle(text, speed)
+    speed = speed or 0.1
     title.Text = ""
-    for i = 1, #t do
-        title.Text = t:sub(1, i)
-        task.wait(s)
+    for i = 1, #text do
+        title.Text = text:sub(1, i)
+        task.wait(speed)
     end
 end
 
@@ -77,6 +69,7 @@ task.spawn(function()
     end
 end)
 
+-- Close Button
 local close = Instance.new("TextButton")
 close.Size = UDim2.new(0, 30, 0, 30)
 close.Position = UDim2.new(1, -35, 0, 5)
@@ -91,6 +84,7 @@ close.MouseButton1Click:Connect(function()
     blur:Destroy()
 end)
 
+-- Key TextBox
 local box = Instance.new("TextBox")
 box.Size = UDim2.new(1, -40, 0, 35)
 box.Position = UDim2.new(0, 20, 0, 70)
@@ -106,6 +100,7 @@ local boxCorner = Instance.new("UICorner")
 boxCorner.CornerRadius = UDim.new(0, 6)
 boxCorner.Parent = box
 
+-- Buttons
 local buttonHolder = Instance.new("Frame")
 buttonHolder.Size = UDim2.new(1, -40, 0, 35)
 buttonHolder.Position = UDim2.new(0, 20, 0, 115)
@@ -142,6 +137,7 @@ getKeyBtn.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Remember Key Checkbox
 local rememberFrame = Instance.new("Frame")
 rememberFrame.Size = UDim2.new(1, -40, 0, 25)
 rememberFrame.Position = UDim2.new(0, 20, 0, 155)
@@ -184,9 +180,9 @@ checkboxBtn.BackgroundTransparency = 1
 checkboxBtn.Text = ""
 checkboxBtn.Parent = checkbox
 
+-- Remember State
 local rememberState = false
 local savedKey = player:GetAttribute("SavedKey")
-
 if savedKey then
     box.Text = savedKey
     rememberState = true
@@ -202,6 +198,7 @@ checkboxBtn.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Key Check Function
 local function checkKey()
     if box.Text ~= correctKey then
         StarterGui:SetCore("SendNotification", {
@@ -228,7 +225,12 @@ local function checkKey()
         })
         gui:Destroy()
         blur:Destroy()
-        loadstring(game:HttpGet(scriptUrl))()
+        local success, err = pcall(function()
+            loadstring(game:HttpGet(scriptUrl))()
+        end)
+        if not success then
+            warn("Failed to load script: "..tostring(err))
+        end
     else
         StarterGui:SetCore("SendNotification", {
             Title = "Wrong Game",
