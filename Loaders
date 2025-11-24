@@ -11,6 +11,7 @@ local AllowedGames = {
     [18642421777] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/thabronx.lua",
     [16472538603] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/thabronx.lua",
     [11177482306] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/streetzwarz.lua",
+    [12077443856] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/calishootout.lua",
 }
 
 local gui = Instance.new("ScreenGui")
@@ -47,12 +48,24 @@ title.TextScaled = true
 title.Font = Enum.Font.GothamBold
 title.Parent = frame
 
-local function typeTitle(text, speed)
-    speed = speed or 0.1
+local prem = Instance.new("TextLabel")
+prem.Size = UDim2.new(1, -20, 0, 20)
+prem.Position = UDim2.new(0, 10, 0, 45)
+prem.BackgroundTransparency = 1
+prem.Text = "Don’t want to wait? Purchase Premium!"
+prem.TextColor3 = Color3.fromRGB(255, 255, 255)
+prem.TextSize = 14
+prem.Font = Enum.Font.GothamSemibold
+prem.Parent = frame
+prem.MouseEnter:Connect(function() prem.TextColor3 = Color3.fromRGB(0, 255, 0) end)
+prem.MouseLeave:Connect(function() prem.TextColor3 = Color3.fromRGB(255, 255, 255) end)
+
+local function typeTitle(t, s)
+    s = s or 0.1
     title.Text = ""
-    for i = 1, #text do
-        title.Text = text:sub(1, i)
-        task.wait(speed)
+    for i = 1, #t do
+        title.Text = t:sub(1, i)
+        task.wait(s)
     end
 end
 
@@ -174,6 +187,7 @@ checkboxBtn.Parent = checkbox
 
 local rememberState = false
 local savedKey = player:GetAttribute("SavedKey")
+
 if savedKey then
     box.Text = savedKey
     rememberState = true
@@ -215,12 +229,7 @@ local function checkKey()
         })
         gui:Destroy()
         blur:Destroy()
-        local success, err = pcall(function()
-            loadstring(game:HttpGet(scriptUrl))()
-        end)
-        if not success then
-            warn("Failed to load script: "..tostring(err))
-        end
+        loadstring(game:HttpGet(scriptUrl))()
     else
         StarterGui:SetCore("SendNotification", {
             Title = "Wrong Game",
