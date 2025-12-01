@@ -134,7 +134,7 @@ local getKeyBtn = createButton("Get Key!", 0.52)
 
 getKeyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
-        setclipboard("https://discord.gg/RufbzyCN6z")
+        setclipboard("https://discord.gg/t3KfkHgA")
         StarterGui:SetCore("SendNotification", {
             Title = "Discord Link Copied",
             Text = "Go to #get-scripts",
