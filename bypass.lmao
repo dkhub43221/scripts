@@ -1,0 +1,61 @@
+local Old; Old = hookfunction(getrenv().tick, function(...)
+    local Response = Old(...)
+    if not checkcaller() and tostring(getcallingscript()):find("?") then
+        Response = Old
+        return coroutine.yield()
+    end
+    return Response
+end)
+
+task.wait(15.50)
+
+local Old; Old = hookfunction(gcinfo, function(...)
+    local Response = Old(...)
+    if tostring(getcallingscript()):find("?") then
+        return Response + math.random(0, 1e4)
+    end
+    return Response
+end)
+
+for Index, Value in getconnections(cloneref(game:GetService("ScriptContext")).Error) do
+    Value:Disable()
+end
+
+task.spawn(function()
+    local Players = cloneref(game:GetService("Players"))
+    local Data = {}
+    local Sizes = {}
+
+    if not Players.LocalPlayer.Character then
+        Players.LocalPlayer.CharacterAdded:Wait()
+        task.wait(1)
+    end
+
+    for Index, Value in Players.LocalPlayer.Character:GetDescendants() do
+        pcall(function()
+            Data[tostring(Value)] = Value.CanCollide
+        end)
+    end
+
+    local Old; Old = hookmetamethod(game, "__index", function(...)
+        local Self, Index = ...
+
+        if checkcaller() then
+            return Old(...)
+        end
+
+        if tostring(Self) == "Humanoid" and Index == "WalkSpeed" then
+            return 10
+        end
+
+        if Data[tostring(Self)] ~= nil and Index == "CanCollide" then
+            return Data[tostring(Self)]
+        end
+
+        return Old(...)
+    end)
+end)
+
+getgenv().AntiCheatBypass = true
+
+repeat task.wait() until getgenv().AntiCheatBypass
