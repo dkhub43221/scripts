@@ -12,6 +12,7 @@ local AllowedGames = {
     [16472538603] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/thabronx.lua",
     [11177482306] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/streetzwarz.lua",
     [12077443856] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/calishootout.lua",
+    [71600459831333] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/streetlife",
 }
 
 local gui = Instance.new("ScreenGui")
@@ -134,7 +135,7 @@ local getKeyBtn = createButton("Get Key!", 0.52)
 
 getKeyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
-        setclipboard("https://discord.gg/t3KfkHgA")
+        setclipboard("https://discord.gg/wNbxP2AE")
         StarterGui:SetCore("SendNotification", {
             Title = "Discord Link Copied",
             Text = "Go to #get-scripts",
