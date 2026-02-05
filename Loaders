@@ -12,6 +12,7 @@ local AllowedGames = {
     [16472538603] = "https://api.luarmor.net/files/v4/loaders/281b31dce8d9eac84ac6e98a22afd120.lua",
     [11177482306] = "https://pastefy.app/Mr058Bra/raw",
     [130700367963690] = "https://pastefy.app/ejleWv6P/raw",
+    [12077443856] = "https://pastefy.app/X2389wTa/raw",
 }
 
 local gui = Instance.new("ScreenGui")
