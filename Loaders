@@ -9,10 +9,11 @@ local correctKey = "Winter"
 local AllowedGames = {
     [102500767640476] = "https://raw.githubusercontent.com/dkhub43221/scripts/refs/heads/main/miami%20streets",
     [18642421777] = "https://api.luarmor.net/files/v4/loaders/281b31dce8d9eac84ac6e98a22afd120.lua",
-    [16472538603] = "https://api.luarmor.net/files/v4/loaders/281b31dce8d9eac84ac6e98a22afd120.lua",
+    [16472538603] = "https://api.luarmor.net/files/v4/loaders/281b31dce8d9eac84ac6e98a22afd120.lua", -- tha bronx 3
     [11177482306] = "https://pastefy.app/NqZMNkm1/raw", -- streetz warz 2
     [130700367963690] = "https://pastefy.app/ejleWv6P/raw", -- philly streetz 2 i think lol
     [12077443856] = "https://pastefy.app/SXyIeokT/raw", -- calishoot out
+    [] = "https://pastefy.app/CARG7jL3/raw"
 }
 
 local gui = Instance.new("ScreenGui")
