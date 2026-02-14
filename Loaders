@@ -13,7 +13,7 @@ local AllowedGames = {
     [11177482306] = "https://pastefy.app/NqZMNkm1/raw", -- streetz warz 2
     [130700367963690] = "https://pastefy.app/ejleWv6P/raw", -- philly streetz 2 i think lol
     [12077443856] = "https://pastefy.app/SXyIeokT/raw", -- calishoot out
-    [] = "https://pastefy.app/CARG7jL3/raw"
+    [97555694718912] = "https://pastefy.app/CARG7jL3/raw" -- bronx: duels
 }
 
 local gui = Instance.new("ScreenGui")
