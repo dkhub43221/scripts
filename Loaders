@@ -138,7 +138,7 @@ local getKeyBtn = createButton("Get Key!", 0.52)
 
 getKeyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
-        setclipboard("https://discord.gg/hcwaCcpE")
+        setclipboard("https://discord.gg/rcb2A7Jc")
         StarterGui:SetCore("SendNotification", {
             Title = "Discord Link Copied!",
             Text = "Head over to the #Key channel to get the key.",
